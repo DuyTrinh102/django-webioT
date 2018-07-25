@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Báo cáo - {{ block.super }}
+{% endblock %}
+
+{% block breadcrumb %}
+  <div class="container">
+      <center><ol class="breadcrumb my-4" style="width: 200px;">
+        <li class="breadcrumb-item">
+  		  <a><font size="5" color="2683e0" face="Arial" ><i>Bảng báo cáo</i></font></a>
+        </li>
+      </ol></center>
+  </div>
+{% endblock %}
+{% block loadJS %}
+  {% load static %} 
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+  $( function() {
+    $( "#datepicker1" ).datepicker();
+  } );
+  $( function() {
+    $( "#datepicker2" ).datepicker();
+  } );
+  </script>
+  
+{% endblock %}
+{% block content %}
+  <div class="container">
+  {% if cment_1 == 2 %}
+  <form method="get" >
+        <div class="breadcrumb my-4" style="float: right;">
+         
+          <div style="color: #15528e">
+            <span>Bắt đầu</span>
+            <div class="datepicker_input">
+              <span class="icon">
+                <i class="fa fa-calendar"></i>
+              </span>
+              <input name="filter_from" type="text" id="datepicker1" style="width: 100px;" autocomplete="off"/>
+            </div>
+          </div>
+          <div class="datepicker-wiget" style="padding-left: 10px; color: #15528e">
+            <span>Kết thúc</span>
+            <div class="datepicker_input">
+              <span class="icon">
+                <i class="fa fa-calendar"></i>
+              </span>
+              <input name="filter_to" type="text" id="datepicker2" style="width: 100px;" autocomplete="off"/>
+            </div>
+          </div>
+          <div class="datepicker-wiget" style="padding-left: 10px; color: #15528e">
+          <span><pre></pre></span>
+            <div>
+              <span class="icon" style="padding-left: 10px;" >
+                
+                <a>
+                <button ><i class="fa fa-search"></i><span>Filt</span></button>
+              </a>
+                <!--
+                <script type="text/javascript">
+                  function myFind(){
+                    var begin = document.getElementById("datepicker1").value;
+                    document.getElementById("demo").innerHTML = begin;
+                  }
+                </script>
+                !-->
+                
+              </span>
+            </div>
+          </div>
+        </div>
+      </form>
+  {% endif %}
+   <ol class="breadcrumb my-4" style="width: 100px; align-self: center;">
+      <div class="dropdown">
+        
+          <a href="{% url 'page' 3 %}" class="dropdown" ><font size="4" color="2683e0" face="Arial"><i>Trạm: </i></font></a>
+
+        <div class="dropdown-content" style="background-color: #ed4040">
+          {% if cment_1 == 1 %}
+            <a class="dropdown-item"><i class="fa fa-comment" style="padding-right: 5px;"></i>Chọn trạm để hiển thị</a>
+          {% else %}
+            <a class="dropdown-item"><i class="fa fa-comment" style="padding-right: 5px;"></i>Quay về danh sách trạm</a>
+          {% endif %}
+        </div>       
+      </div>
+    </ol>
+  {% if station|length == 0 %}
+      <a>Chưa có trạm trong tài khoản <strong>{{ user.username}}</strong></a>
+  {% else %}
+
+  {% for i in station %}
+          <a type="post" href="{% url 'page' 3 %}{{i.station_name}}" class="btn btn-info border">{{i.station_name}}</a>
+        
+  {% endfor %}
+  {% endif %}
+  <br><hr>
+  {% if dataTable.data|length != 0 %}
+  	<div>
+	  {% for sub in dataTable.sub %}	
+	  	<div style="border: solid 1px;float: left; padding-left: 10px; padding-right: 10px; padding-bottom: 10px;">  	
+		  	<caption align="top"><i>Bảng báo cáo chỉ số {{ sub.name }}</i></caption>
+		    <table border="1px">
+
+		    	<thead>
+		    		<tr bgcolor="#48bdec">
+		    		  <th >Thời gian</th>
+		    		  <th >Giá trị</th>
+		    		</tr>
+		    	</thead>
+		    	<tbody>
+	    		
+	    			{% for data in dataTable.data%}
+		    		  <tr>
+		    		    {% if data.paraStation == sub %}
+		    		      <td>{{data.last_updated.time}}<br>{{data.last_updated.date}}</td>
+		    		      <td>{{data.value}}</td>
+		    		    {% endif %}
+		    		  </tr>
+		    		{% endfor %}
+			    	
+		    	</tbody>
+		    </table>
+		
+		</div>
+	  {% endfor %}
+	</div>
+  {% else %}
+    <a> Không có dữ liệu hiển thị!</a>
+
+  {% endif %}
+</div>
+{% endblock %}

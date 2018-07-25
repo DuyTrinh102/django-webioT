@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block stylesheet %}
+  <link rel="stylesheet" href="{% static 'css/accounts.css' %}">
+{% endblock %}
+
+{% block body %}
+  <div class="container">
+    <h1 class="text-center logo my-4">
+      <a href="{% url 'home' %}">Home</a>
+    </h1>
+    <div class="row justify-content-center">
+      <div class="col-lg-4 col-md-6 col-sm-8">
+        <div class="card">
+          <div class="card-body">
+            <center><h3 class="card-title">Setting</h3></center>
+            <p><i>Tài khoản:</i> <strong>{{request.user}}</strong></p>
+            <p><i>Các trạm:</i></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

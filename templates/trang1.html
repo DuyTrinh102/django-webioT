@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+  Phân tích - {{ block.super }}
+{% endblock %}
+
+{% block breadcrumb %}
+	<div class="container">
+      <ol class="breadcrumb my-4">
+        <li class="breadcrumb-item">
+  		  <a ><font size="5" color="2683e0" face="Arial"><i>Phân tích</i></font></a>
+        </li>
+      </ol>
+{% endblock %}
+{% block loadJS %}
+  {% load static %} 
+  <script type="text/javascript" src="{% static "fusioncharts/fusioncharts.js" %}"></script>
+  <script type="text/javascript" src="{% static "fusioncharts/themes/fusioncharts.theme.fint.js" %}"></script>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+  $( function() {
+    $( "#datepicker1" ).datepicker();
+  } );
+  $( function() {
+    $( "#datepicker2" ).datepicker();
+  } );
+  </script>
+{% endblock %}
+{% block active %}
+	<a id='{{pk}}' class="active"></a>
+{% endblock %}
+
+{% block content %}
+ 
+  {% for sta in station %}</font>
+  	<div style="border: solid 1px;">
+	<h2> <font size="4">Trạm <i style="color: #7c7171;">{{sta.station_name}}</i></font></h2>
+	
+	{% for output in column2D %}
+	  {% if sta.station_name == output.constructorOptions.station %}
+	   {% autoescape off %}
+	   	<!--
+	   	{% if output.constructorOptions.renderAt == "CO" %}
+	    <div class="container" id='{{ output.constructorOptions.renderAt}}'>{{output.render}}</div> 
+	    {% endif %}
+	    {% if output.constructorOptions.renderAt == "SO2" %}
+	    <div class="container" id='{{ output.constructorOptions.renderAt}}'>{{output.render}}</div> 
+	    {% endif %} -->
+	    <center><div  id='{{ output.constructorOptions.renderAt}}' >{{output.render}}</div></center>
+	    <hr style="width: 50%">
+   	   {% endautoescape %}
+   	  {% endif %}
+    {% endfor %}
+    </div>
+  {% endfor %}
+  
+{% endblock %}

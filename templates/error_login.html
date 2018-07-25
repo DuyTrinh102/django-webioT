@@ -1,0 +1,15 @@
+{% extends 'base.html' %} 
+
+{% block breadcrumb %}
+	<div class="container">
+      <ol class="breadcrumb my-4">
+        <li class="breadcrumb-item">
+          
+          {% if error == 1 %}
+  		    <a ><font size="6" color="2683e0" face="Arial"><i>Chưa đăng nhập. Vui lòng đăng nhập để xem trang này.</i></font></a>
+          {% elif error == 2 %}
+			<a ><font size="6" color="2683e0" face="Arial"><i>Thời gian gửi lên sai.</i></font></a>
+          {% endif %}
+        </li>
+      </ol>
+{% endblock %}

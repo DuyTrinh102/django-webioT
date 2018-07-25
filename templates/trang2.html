@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Báo cáo - {{ block.super }}
+{% endblock %}
+{% block loadJS %}
+  {% load static %} 
+  <script type="text/javascript" src="{% static "fusioncharts/fusioncharts.js" %}"></script>
+  <script type="text/javascript" src="{% static "fusioncharts/themes/fusioncharts.theme.fint.js" %}"></script>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+  $( function() {
+    $( "#datepicker1" ).datepicker();
+  } );
+  $( function() {
+    $( "#datepicker2" ).datepicker();
+  } );
+  </script>
+{% endblock %}
+{% block breadcrumb %}
+  <div class="container" >
+      <ol class="breadcrumb my-4" style="width: 40%;">
+        <li class="breadcrumb-item">
+  		  <a ><font size="5" color="2683e0" face="Arial"><i>Biểu đồ báo cáo</i></font></a>
+        </li>
+      </ol>
+{% endblock %}
+
+{% block content %}
+    
+    {% if cment_1 == 2 %}
+      <form method="get" >
+        <div class="breadcrumb my-4" style="float: right;">
+         
+          <div style="color: #15528e">
+            <span>Bắt đầu</span>
+            <div class="datepicker_input">
+              <span class="icon">
+                <i class="fa fa-calendar"></i>
+              </span>
+              <input name="filter_from" type="text" id="datepicker1" style="width: 100px;" autocomplete="off"/>
+            </div>
+          </div>
+          <div class="datepicker-wiget" style="padding-left: 10px; color: #15528e">
+            <span>Kết thúc</span>
+            <div class="datepicker_input">
+              <span class="icon">
+                <i class="fa fa-calendar"></i>
+              </span>
+              <input name="filter_to" type="text" id="datepicker2" style="width: 100px;" autocomplete="off"/>
+            </div>
+          </div>
+          <div class="datepicker-wiget" style="padding-left: 10px; color: #15528e">
+          <span><pre></pre></span>
+            <div>
+              <span class="icon" style="padding-left: 10px;" >
+                
+                <a>
+                <button ><i class="fa fa-search"></i><span>Filt</span></button>
+              </a>
+                <!--
+                <script type="text/javascript">
+                  function myFind(){
+                    var begin = document.getElementById("datepicker1").value;
+                    document.getElementById("demo").innerHTML = begin;
+                  }
+                </script>
+                !-->
+                
+              </span>
+            </div>
+          </div>
+        </div>
+      </form>
+      
+    {% endif %}
+
+    <ol class="breadcrumb my-4" style="width: 100px; align-self: center;">
+      <div class="dropdown">
+        
+          <a href="{% url 'page' 2 %}" class="dropdown" ><font size="4" color="2683e0" face="Arial"><i>Trạm: </i></font></a>
+
+        <div class="dropdown-content" style="background-color: #ed4040">
+          {% if cment_1 == 1 %}
+            <a class="dropdown-item"><i class="fa fa-comment" style="padding-right: 5px;"></i>Chọn trạm để hiển thị</a>
+          {% else %}
+            <a class="dropdown-item"><i class="fa fa-comment" style="padding-right: 5px;"></i>Quay về danh sách trạm</a>
+          {% endif %}
+        </div>       
+      </div>
+    </ol>
+    
+    {% if station|length == 0 %}
+      <a>Chưa có trạm trong tài khoản <strong>{{ user.username}}</strong></a>
+    {% else %}
+      <div style="position: absolute; padding-left: 30px; padding-right: 30px;">
+      {% for i in station %}
+        <a type="post" href="{% url 'page' 2 %}{{i.station_name}}" class="btn btn-info border">{{i.station_name}}</a>    
+      {% endfor %}
+      </div>
+    {% endif %}
+  <br><br><hr style="width: 80%;">
+  
+  {% if column2D|length == 0 %}
+    <div>Không có dữ liệu hiển thị!</div>
+  {% else %}
+  {% for output in column2D %}
+
+   {% autoescape off %}
+   	<!--
+   	{% if output.constructorOptions.renderAt == "CO" %}
+    <div class="container" id='{{ output.constructorOptions.renderAt}}'>{{output.render}}</div> 
+    {% endif %}
+    {% if output.constructorOptions.renderAt == "SO2" %}
+    <div class="container" id='{{ output.constructorOptions.renderAt}}'>{{output.render}}</div> 
+    {% endif %} -->
+    <center><div  id='{{ output.constructorOptions.renderAt}}' >{{output.render}}</div></center>
+    <br><hr style="width: 50%">
+   {% endautoescape %}
+  {% endfor %}
+  {% endif %}
+
+{% endblock %}
